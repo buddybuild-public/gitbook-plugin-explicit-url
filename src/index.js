@@ -40,7 +40,7 @@ const useExplicitUrl = (filename) => {
     }
     element.attribs.href = url.format(link)
   })
-  fs.writeFileSync(filename, $.html(), 'UTF-8')
+  fs.writeFileSync(filename, $.html({decodeEntities: false}), 'UTF-8')
 }
 
 module.exports = {
