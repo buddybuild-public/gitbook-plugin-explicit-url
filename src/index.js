@@ -5,13 +5,16 @@ const cheerio = require('cheerio')
 
 let updatedPages = []
 
-const getTargetHtmlPath = (mdPath) => {
-  const mdInfo = path.parse(mdPath)
-  let targetFile = mdInfo.base.replace('.md', '.html')
-  if (mdInfo.base === 'README.md') {
+const getTargetHtmlPath = (filePath) => {
+  const fileInfo = path.parse(filePath)
+  let targetFile = fileInfo.base.replace('.md', '.html')
+  if (fileInfo.ext === '.adoc') {
+    targetFile = fileInfo.base.replace('.adoc', '.html')
+  }
+  if (fileInfo.base === 'README.md' || fileInfo.base === 'README.adoc') {
     targetFile = 'index.html'
   }
-  const relpath = path.join('./', '_book', mdInfo.dir, targetFile)
+  const relpath = path.join('./', '_book', fileInfo.dir, targetFile)
   return path.resolve(relpath)
 }
 
@@ -35,7 +38,7 @@ const useExplicitUrl = (filename) => {
       // this is anchor
     } else if (link.pathname.endsWith('/')) {
       link.pathname += 'index.html'
-    } else if (!basename.includes('.')) {
+    } else if (!basename.includes('.') || link.pathname === '..') {
       link.pathname += '/index.html'
     }
     element.attribs.href = url.format(link)
