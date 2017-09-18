@@ -37,9 +37,9 @@ const useExplicitUrl = (filename) => {
     } else if (link.pathname === '' && link.hash !== '') {
       // this is anchor
     } else if (link.pathname.endsWith('/')) {
-      link.pathname += 'index.html'
+      // link.pathname += 'index.html'
     } else if (!basename.includes('.') || link.pathname === '..') {
-      link.pathname += '/index.html'
+      link.pathname += '/';
     }
     element.attribs.href = url.format(link)
   })
